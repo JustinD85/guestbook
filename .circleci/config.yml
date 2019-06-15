@@ -39,7 +39,7 @@ jobs:
           key: v1-dependencies-{{ checksum "project.clj" }}
 
       # run tests!
-      - run: do lein test, uberjar
+      - run: lein do test, uberjar
 
       - store_artifacts:
           path: target/uberjar/guestbook.jar

@@ -9,6 +9,10 @@
 (defn home-page [request]
   (layout/render request "home.html" {:messages (db/get-messages)}))
 
+(defn save-message! [{:keys [params]}]
+  (db/save-message! params)
+  (response/found "/"))
+
 (defn about-page [request]
   (layout/render request "about.html"))
 
@@ -17,5 +21,6 @@
    {:middleware [middleware/wrap-csrf
                  middleware/wrap-formats]}
    ["/" {:get home-page}]
-   ["/about" {:get about-page}]])
+   ["/about" {:get about-page}]
+   ["/message" {:post save-message!}]])
 

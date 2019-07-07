@@ -10,6 +10,8 @@
     [mount.core :as mount])
   (:gen-class))
 
+;;(-> (.getElementById js/document "content") (.-innerHTML) (set! "Hello, Justin!"))
+
 (def cli-options
   [["-p" "--port PORT" "Port number"
     :parse-fn #(Integer/parseInt %)]])

@@ -14,13 +14,13 @@
    [:message
     st/required
     st/string
-    {:message "message must contain at least 10 characters"
+    {:message "message must contain at least 5 characters"
      :validate (fn [msg] (>= (count msg) 5))}]])
 
-(def validate-message [params]
+(defn validate-message [params]
   (first (st/validate params message-schema)))
 
-(defn home-page [request]
+(defn home-page [{:keys [flash] :as request}]
   (layout/render
    request
    "home.html"

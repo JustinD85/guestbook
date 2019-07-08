@@ -2,23 +2,9 @@
   (:require
     [guestbook.layout :as layout]
     [guestbook.db.core :as db]
-    [clojure.java.io :as io]
     [guestbook.middleware :as middleware]
-    [struct.core :as st]
-    [ring.util.http-response :as response]))
-
-(def message-schema
-  [[:name
-    st/required
-    st/string]
-   [:message
-    st/required
-    st/string
-    {:message "message must contain at least 5 characters"
-     :validate (fn [msg] (>= (count msg) 5))}]])
-
-(defn validate-message [params]
-  (first (st/validate params message-schema)))
+    [ring.util.http-response :as response]
+    [guestbook.validation :refer [validate-message]]))
 
 (defn home-page [{:keys [flash] :as request}]
   (layout/render

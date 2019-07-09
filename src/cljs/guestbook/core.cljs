@@ -5,7 +5,7 @@
             [guestbook.validation :refer [validate-message]]))
 
 (defn message-list [messages]
-  (println messages)
+  (println @messages)
   [:ul.messages
    (for [{:keys [timestamp message name]} @messages]
      ^{:key timestamp}
@@ -67,58 +67,16 @@
          :on-click #(send-message! fields errors messages)}]])))
 
 (defn home []
-  (let [messages (r/atom nil)]
+  (let [messages (r/atom [])]
     (get-messages messages)
     (fn []
       [:div.content>div.columns.is-centered>div.column.is-two-thirds
        [:div.columns>div.column
-        [:h3 "Messages"]
-        [message-list messages]]
+        [message-form messages]]
        [:div.columns>div.column
-        [message-form messages]]])))
+        [:h3 "Messages"]
+        [message-list messages]]])))
 
 (r/render
  (home)
  (.getElementById js/document "content"))
-;;(-> (.getElementById js/document "content") (.-innerHTML) (set! "hello, Justin."))
-
-
-
-
- ;;  <div class="columns is-centered">
- ;;    <div class="column is-two-thirds">
- ;;      <div class="columns">
- ;;        <div class="column">
- ;;          <h3>Messages</h3>
- ;;          <ul class="messages">
- ;;            {% for item in messages %}
- ;;            <li>
- ;;              <time>
- ;;                {{item.timestamp|date:"yyyy-MM-dd HH:mm"}}
- ;;              </time>
- ;;              <p>{{item.message}}</p>
- ;;              <p> - {{item.name}}</p>
- ;;            </li> {% endfor %} </ul>
- ;;        </div>
- ;;      </div>
- ;;      <div class="columns">
- ;;        <div class="column">
- ;;          <form method="POST" action="/message">
- ;;            {% csrf-field %}
- ;;            <div class="field">
- ;;              <label class="label" for="name"> Name </label>
- ;;              <input class="input" type="text" name="name" value="{{name}}" />
- ;;            </div>
- ;;            <div class="field">
- ;;              <label class="label" for="message"> Message
- ;;              </label>
- ;;              <textarea class="textarea" name="message">
- ;; {{message}}
- ;;              </textarea>
- ;;            </div>
- ;;            <input type="submit" class="button is-primary" value="comment" />
- ;;          </form>
- ;;        </div>
- ;;      </div>
- ;;    </div>
- ;;  </div>

@@ -6,12 +6,13 @@
     [ring.util.http-response :as response]
     [guestbook.validation :refer [validate-message]]))
 
+(defn message-list [_]
+  (response/ok {:messages (vec (db/get-messages))}))
+
 (defn home-page [{:keys [flash] :as request}]
   (layout/render
    request
-   "home.html"
-   (merge {:messages (db/get-messages)}
-          (select-keys flash [:name :message :errors]))))
+   "home.html"))
 
 (defn save-message! [{:keys [params]}]
   (if-let [errors (validate-message params)]
@@ -32,5 +33,6 @@
                  middleware/wrap-formats]}
    ["/" {:get home-page}]
    ["/about" {:get about-page}]
+   ["/messages" {:get message-list}]
    ["/message" {:post save-message!}]])
 

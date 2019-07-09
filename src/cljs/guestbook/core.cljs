@@ -2,17 +2,19 @@
   (:require [reagent.core :as r]
             [ajax.core :refer [GET POST]]
             [clojure.string :as string]
+            [re-frame.core :as rf]
             [guestbook.validation :refer [validate-message]]))
 
 (defn message-list [messages]
   (println @messages)
   [:ul.messages
-   (for [{:keys [timestamp message name]} @messages]
-     ^{:key timestamp}
-     [:li
-      [:time (.toLocaleString timestamp)]
-      [:p message]
-      [:p " - " name]])])
+   (let [messages @messages]
+     (for [{:keys [timestamp message name]} messages]
+       ^{:key timestamp}
+       [:li
+        [:time (.toLocaleString timestamp)]
+        [:p message]
+        [:p " - " name]]))])
 
 (defn get-messages [messages]
   (GET "/messages"

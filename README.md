@@ -15,6 +15,11 @@ You will need [Leiningen][1] 2.0 or above installed.
 To start a web server for the application, run:
 
     lein run 
+
+Then start the client-side server if you want to change the source code and see it auto-rebuild
+
+    lein cljsbuild auto
+    
 ## Testing
 
 To start the test runner

@@ -32,7 +32,8 @@
                  [org.clojure/clojurescript "1.10.238" :scope "provided"]
                  [reagent "0.8.1"]
                  [cljs-ajax "0.7.3"]
-                 [re-frame "0.10.6"]]
+                 [re-frame "0.10.6"]
+                 [com.cognitect/transit-cljs "0.8.256"]]
 
   :min-lein-version "2.0.0"
 

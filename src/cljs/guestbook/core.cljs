@@ -41,15 +41,15 @@
         [:p message]
         [:p " - " name]]))])
 
-(defn get-messages [messages]
-  (GET "/messages"
+(defn get-messages []
+  (GET "api/messages"
        {:headers {"Accept" "application/transit+json"}
         :handler #(rf/dispatch [:messages/set (:messages %)])}))
 
 (defn send-message! [fields errors]
   (if-let [validation-errors (validate-message @fields)]
     (reset! errors validation-errors)
-    (POST "/message"
+    (POST "api/message"
           {:format :json
            :headers
            {"Accept" "application/transit+json"
@@ -96,17 +96,18 @@
 (defn home []
   (let [messages (rf/subscribe [:messages/list])]
     (rf/dispatch [:app/initialize])
-    (get-messages messages)
+    (get-messages)
     (fn []
-      (if @(rf/subscribe [:messages/loading?])
-        [:div>div.row>div.span12>h3
-         "Loading Messages..."]
-        [:div.content>div.columns.is-centered>div.column.is-two-thirds
+      [:div.content>div.columns.is-centered>div.column.is-two-thirds
+       (if @(rf/subscribe [:messages/loading?])
+         [:h3
+          "Loading Messages..."]
+         [:div ;;because of else in this if we use this div
          [:div.columns>div.column
           [message-form messages]]
          [:div.columns>div.column
           [:h3 "Messages"]
-          [message-list messages]]]))))
+          [message-list messages]]])])))
 
 (r/render
  (home)
